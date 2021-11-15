@@ -1,3 +1,8 @@
+<center><font size=16>Deep Learning Programming Note</font></center>
+
+
+[TOC]
+
 ### 1 设置可见GPU
 
 - 在深度学习中，如果一台电脑具有多个NVIDIA的GPUs，用户想要在不同的GPU上训练不同的网络，那么在程序中指定占用的GPU的id，即可指定GPU id为0的GPU可见，其他的不可见，就不会占用其他GPU了。
