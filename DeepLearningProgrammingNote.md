@@ -1,4 +1,4 @@
-### <center><font size=16>Deep Learning Programming Note</font></center>
+<div align='center' ><font size='70'>Deep Learning Programming Note</font></div>
 
 
 [TOC]
