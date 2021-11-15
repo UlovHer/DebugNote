@@ -100,7 +100,25 @@ print('x,cuda2numpy：',x.cuda().numpy())
 print('x,cuda2numpy：',x.cuda().cpu().numpy())
 ```
 
+#### 2.4 Function Error
 
+##### 2.4.1 CrossEntropyLoss Error: 1D target tensor expected, multi-target not supported
+
+- `loss = lossFunction(out, labels)`，**输入labels维度应该为1维，且精度不能是Double，必须换成long**
+
+##### 2.4.2 RuntimeError: view size is not compatible with input tensor's size and stride (at least one dimension spans across two contiguous subspaces). Use .reshape(...) instead.
+
+- view只能作用在contiguous的variable上，如果在view之前调用了transpose、permute等，就需要调用contiguous()来返回一个contiguous copy。
+
+```python
+b = a.permute(1, 0)  
+# 转置
+print(b.view(9))
+
+# 修改如下
+b = a.permute(1, 0).contiguous()  
+print(b.view(9))
+```
 
 #### 2.5 Warning
 
@@ -112,7 +130,12 @@ print('x,cuda2numpy：',x.cuda().cpu().numpy())
 
 - **im = Variable(im.cuda()，volatile=True)改为im = Variable(im.cuda())**
 
-
+```python
+lossFunction = torch.nn.CrossEntropyLoss()
+loss = lossFunction(out, labels.long())  
+# labels.shape->Tensor[dim=0]
+# 修改数据精度
+```
 
 ##### 2.5.3 UserWarning: invalid index of a 0-dim tensor. This will be an error in PyTorch 0.5. Use tensor.item() to convert a 0-dim tensor to a Python number
 
@@ -121,8 +144,6 @@ print('x,cuda2numpy：',x.cuda().cpu().numpy())
 ##### 2.5.3 UserWarning: nn.functional.upsample is deprecated. Use nn.functional.interpolate instead.
 
 - **upsample改为interpolate**
-
-
 
 ##### 2.5.4 UserWarning: size_average and reduce args will be deprecated, please use reduction='sum' instead.warnings.warn(warning.format(ret)) 
 
